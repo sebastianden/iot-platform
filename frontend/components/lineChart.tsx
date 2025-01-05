@@ -1,0 +1,51 @@
+import { Line } from "react-chartjs-2";
+import "chart.js/auto";
+import "chartjs-adapter-moment";
+import { ChartData, ChartOptions } from "chart.js";
+
+interface DataPoint {
+  value: number;
+  timestamp: number;
+}
+
+interface LineChartProps {
+  data: DataPoint[];
+  label: string;
+  borderColor: string;
+  backgroundColor: string;
+}
+
+const LineChart: React.FC<LineChartProps> = ({
+  data,
+  label,
+  borderColor,
+  backgroundColor,
+}) => {
+  const chartData: ChartData<"line"> = {
+    labels: data.map((d) => d.timestamp),
+    datasets: [
+      {
+        label,
+        data: data.map((d) => d.value),
+        borderColor,
+        backgroundColor,
+        fill: true,
+      },
+    ],
+  };
+
+  const options: ChartOptions<"line"> = {
+    scales: {
+      x: {
+        type: "time",
+        time: {
+          unit: "minute",
+        },
+      },
+    },
+  };
+
+  return <Line data={chartData} options={options} />;
+};
+
+export default LineChart;
