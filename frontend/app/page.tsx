@@ -1,7 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-
-import useFetchData from "../hooks/useFetchData";
 import LineChart from "../components/lineChart";
 
 export default function Home() {
@@ -9,6 +7,8 @@ export default function Home() {
 
   const [dateRange, setDateRange] = useState<string>("all");
   const [device, setDevice] = useState<string>("core2");
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const handleDateRangeChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -35,8 +35,24 @@ export default function Home() {
     }
   };
 
-  const { from, to } = getUnixTimeRange();
-  const { data, loading } = useFetchData(url, from, to, device);
+  useEffect(() => {
+    const fetchData = async (from: number, to: number, device: string) => {
+      try {
+        const response = await fetch(
+          `${url}?from=${from}&to=${to}&device=${device}`
+        );
+        const result = await response.json();
+        setData(result.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const { from, to } = getUnixTimeRange();
+    fetchData(from, to, device);
+  }, [dateRange, device]);
 
   const temperature = data.map(({ temperature, timestamp }) => ({
     value: temperature,
@@ -68,35 +84,27 @@ export default function Home() {
     <div className="flex p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex grow justify-items-center items-center">
         <div className="grow grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4">
-          <div className="col-span-2 p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-            <div className="className=border-2 border-gray-200 rounded-xl p-4">
-              <form className="text-gray-500">
-                <label htmlFor="dateRange">Select Date Range:</label>
-                <select
-                  id="dateRange"
-                  value={dateRange}
-                  onChange={handleDateRangeChange}
-                >
-                  <option value="lastDay">Last Day</option>
-                  <option value="lastWeek">Last Week</option>
-                  <option value="last30Days">Last 30 Days</option>
-                  <option value="all">All</option>
-                </select>
-              </form>
-            </div>
-            <div className="className=border-2 border-gray-200 rounded-xl p-4">
-              <form>
-                <label htmlFor="device">Select Device:</label>
-                <select
-                  id="device"
-                  value={device}
-                  onChange={handleDeviceChange}
-                >
-                  <option value="core2">Core2</option>
-                  {/* Add more device options here as needed */}
-                </select>
-              </form>
-            </div>
+          <div className="col-span-2 grid grid-cols-2 p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
+            <form className="className=border-2 border-gray-200 rounded-xl text-gray-500 p-4">
+              <label htmlFor="dateRange">Select Date Range:</label>
+              <select
+                id="dateRange"
+                value={dateRange}
+                onChange={handleDateRangeChange}
+              >
+                <option value="lastDay">Last Day</option>
+                <option value="lastWeek">Last Week</option>
+                <option value="last30Days">Last 30 Days</option>
+                <option value="all">All</option>
+              </select>
+            </form>
+            <form className="className=border-2 border-gray-200 rounded-xl text-gray-500 p-4">
+              <label htmlFor="device">Select Device:</label>
+              <select id="device" value={device} onChange={handleDeviceChange}>
+                <option value="core2">Core2</option>
+                {/* Add more device options here as needed */}
+              </select>
+            </form>
           </div>
           <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
             <LineChart
