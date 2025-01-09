@@ -3,6 +3,7 @@ import * as cdk from "aws-cdk-lib";
 import { ApiStack } from "../lib/api-stack";
 import { DatabaseStack } from "../lib/database-stack";
 import { IotStack } from "../lib/iot-stack";
+import { WebsiteStack } from "../lib/website-stack";
 
 const app = new cdk.App();
 
@@ -32,4 +33,12 @@ new ApiStack(app, "ApiStack", {
   },
   tags,
   iotTable: databaseStack.iotTable,
+});
+
+new WebsiteStack(app, "WebsiteStack", {
+  env: {
+    account,
+    region,
+  },
+  tags,
 });

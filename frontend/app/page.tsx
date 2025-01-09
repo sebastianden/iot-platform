@@ -8,7 +8,7 @@ export default function Home() {
   const [dateRange, setDateRange] = useState<string>("all");
   const [device, setDevice] = useState<string>("core2");
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  //const [loading, setLoading] = useState<boolean>(true);
 
   const handleDateRangeChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -46,7 +46,7 @@ export default function Home() {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false);
+        //setLoading(false);
       }
     };
 
