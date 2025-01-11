@@ -5,7 +5,7 @@ import LineChart from "../components/lineChart";
 export default function Home() {
   const url = "https://j5v6xbmpld.execute-api.eu-central-1.amazonaws.com/prod/";
 
-  const [dateRange, setDateRange] = useState<string>("all");
+  const [dateRange, setDateRange] = useState<string>("lastDay");
   const [device, setDevice] = useState<string>("core2");
   const [data, setData] = useState([]);
   //const [loading, setLoading] = useState<boolean>(true);
@@ -80,14 +80,25 @@ export default function Home() {
   const lastPressure =
     pressure.length > 0 ? parseInt(pressure[pressure.length - 1].value) : null;
 
+  const battery = data.map(({ battery, timestamp }) => ({
+    value: battery,
+    timestamp,
+  }));
+
+  const lastBattery =
+    battery.length > 0 ? parseInt(battery[battery.length - 1].value) : null;
+
   return (
-    <div className="flex p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex p-5 font-[family-name:var(--font-geist-sans)]">
       <main className="flex grow justify-items-center items-center">
         <div className="grow grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4">
-          <div className="col-span-2 grid grid-cols-2 p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
+          <div className="lg:col-span-2 md:col-span-2 sm:col-span-1 p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
             <form className="className=border-2 border-gray-200 rounded-xl text-gray-500 p-4">
-              <label htmlFor="dateRange">Select Date Range:</label>
+              <label className="pr-5" htmlFor="dateRange">
+                Select Date Range:
+              </label>
               <select
+                className="w-48"
                 id="dateRange"
                 value={dateRange}
                 onChange={handleDateRangeChange}
@@ -99,13 +110,21 @@ export default function Home() {
               </select>
             </form>
             <form className="className=border-2 border-gray-200 rounded-xl text-gray-500 p-4">
-              <label htmlFor="device">Select Device:</label>
-              <select id="device" value={device} onChange={handleDeviceChange}>
+              <label className="pr-14" htmlFor="device">
+                Select Device:
+              </label>
+              <select
+                className="w-48"
+                id="device"
+                value={device}
+                onChange={handleDeviceChange}
+              >
                 <option value="core2">Core2</option>
                 {/* Add more device options here as needed */}
               </select>
             </form>
           </div>
+
           <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
             <LineChart
               data={temperature}
@@ -155,6 +174,23 @@ export default function Home() {
                 {lastPressure}
               </p>
               <p className="flex text-2xl text-gray-500">hPa</p>
+            </div>
+          </div>
+          <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
+            <LineChart
+              data={battery}
+              label="Battery (%)"
+              borderColor="#06ce21"
+              backgroundColor="rgba(115, 255, 64, 0.2)"
+            />
+          </div>
+          <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
+            <p className="text-2xl text-gray-500">Battery:</p>
+            <div className="flex justify-center">
+              <p className="flex font-bold text-5xl text-green-500">
+                {lastBattery}
+              </p>
+              <p className="flex text-2xl text-gray-500">%</p>
             </div>
           </div>
         </div>

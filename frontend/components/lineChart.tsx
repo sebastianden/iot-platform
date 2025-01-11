@@ -39,7 +39,7 @@ const LineChart: React.FC<LineChartProps> = ({
       x: {
         type: "time",
         time: {
-          unit: "minute",
+          unit: "day",
         },
       },
     },
