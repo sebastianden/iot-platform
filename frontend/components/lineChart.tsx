@@ -35,6 +35,13 @@ const LineChart: React.FC<LineChartProps> = ({
   };
 
   const options: ChartOptions<"line"> = {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: {
+        position: "bottom",
+      },
+    },
     scales: {
       x: {
         type: "time",

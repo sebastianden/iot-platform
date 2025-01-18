@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import LineChart from "../components/lineChart";
+import DataCard from "../components/dataCard";
+import Menu from "../components/menu";
 
 export default function Home() {
   const url = "https://j5v6xbmpld.execute-api.eu-central-1.amazonaws.com/prod/";
@@ -10,32 +11,22 @@ export default function Home() {
   const [data, setData] = useState([]);
   //const [loading, setLoading] = useState<boolean>(true);
 
-  const handleDateRangeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setDateRange(event.target.value);
-  };
-
-  const handleDeviceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setDevice(event.target.value);
-  };
-
-  const getUnixTimeRange = (): { from: number; to: number } => {
-    const now = Date.now();
-    switch (dateRange) {
-      case "lastDay":
-        return { from: now - 86400000, to: now }; // 24 * 60 * 60 * 1000
-      case "lastWeek":
-        return { from: now - 604800000, to: now }; // 7 * 24 * 60 * 60 * 1000
-      case "last30Days":
-        return { from: now - 2592000000, to: now }; // 30 * 24 * 60 * 60 * 1000
-      case "all":
-      default:
-        return { from: 0, to: now };
-    }
-  };
-
   useEffect(() => {
+    const getUnixTimeRange = (): { from: number; to: number } => {
+      const now = Date.now();
+      switch (dateRange) {
+        case "lastDay":
+          return { from: now - 86400000, to: now }; // 24 * 60 * 60 * 1000
+        case "lastWeek":
+          return { from: now - 604800000, to: now }; // 7 * 24 * 60 * 60 * 1000
+        case "last30Days":
+          return { from: now - 2592000000, to: now }; // 30 * 24 * 60 * 60 * 1000
+        case "all":
+        default:
+          return { from: 0, to: now };
+      }
+    };
+
     const fetchData = async (from: number, to: number, device: string) => {
       try {
         const response = await fetch(
@@ -92,107 +83,48 @@ export default function Home() {
     <div className="flex p-5 font-[family-name:var(--font-geist-sans)]">
       <main className="flex grow justify-items-center items-center">
         <div className="grow grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4">
-          <div className="lg:col-span-2 md:col-span-2 sm:col-span-1 p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-            <form className="className=border-2 border-gray-200 rounded-xl text-gray-500 p-4">
-              <label className="pr-5" htmlFor="dateRange">
-                Select Date Range:
-              </label>
-              <select
-                className="w-48"
-                id="dateRange"
-                value={dateRange}
-                onChange={handleDateRangeChange}
-              >
-                <option value="lastDay">Last Day</option>
-                <option value="lastWeek">Last Week</option>
-                <option value="last30Days">Last 30 Days</option>
-                <option value="all">All</option>
-              </select>
-            </form>
-            <form className="className=border-2 border-gray-200 rounded-xl text-gray-500 p-4">
-              <label className="pr-14" htmlFor="device">
-                Select Device:
-              </label>
-              <select
-                className="w-48"
-                id="device"
-                value={device}
-                onChange={handleDeviceChange}
-              >
-                <option value="core2">Core2</option>
-                {/* Add more device options here as needed */}
-              </select>
-            </form>
-          </div>
-
-          <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-            <LineChart
-              data={temperature}
-              label="Temperature (°C)"
-              borderColor="#ff0000"
-              backgroundColor="rgba(255, 152, 152, 0.2)"
-            />
-          </div>
-          <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-            <p className="text-2xl text-gray-500">Temperature:</p>
-            <div className="flex justify-center">
-              <p className="flex font-bold text-5xl text-red-500">
-                {lastTemperature}
-              </p>
-              <p className="flex text-2xl text-gray-500">°C</p>
-            </div>
-          </div>
-          <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-            <LineChart
-              data={humidity}
-              label="Humidity (%)"
-              borderColor="#0099ff"
-              backgroundColor="rgba(88, 135, 255, 0.2)"
-            />
-          </div>
-          <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-            <p className="text-2xl text-gray-500">Humidity:</p>
-            <div className="flex justify-center">
-              <p className="flex font-bold text-5xl text-blue-500">
-                {lastHumidity}
-              </p>
-              <p className="flex text-2xl text-gray-500">%</p>
-            </div>
-          </div>
-          <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-            <LineChart
-              data={pressure}
-              label="Pressure (hPa)"
-              borderColor="rgba(255, 159, 64, 1)"
-              backgroundColor="rgba(255, 159, 64, 0.2)"
-            />
-          </div>
-          <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-            <p className="text-2xl text-gray-500">Pressure:</p>
-            <div className="flex justify-center">
-              <p className="flex font-bold text-5xl text-orange-500">
-                {lastPressure}
-              </p>
-              <p className="flex text-2xl text-gray-500">hPa</p>
-            </div>
-          </div>
-          <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-            <LineChart
-              data={battery}
-              label="Battery (%)"
-              borderColor="#06ce21"
-              backgroundColor="rgba(115, 255, 64, 0.2)"
-            />
-          </div>
-          <div className="p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-            <p className="text-2xl text-gray-500">Battery:</p>
-            <div className="flex justify-center">
-              <p className="flex font-bold text-5xl text-green-500">
-                {lastBattery}
-              </p>
-              <p className="flex text-2xl text-gray-500">%</p>
-            </div>
-          </div>
+          <Menu
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            device={device}
+            setDevice={setDevice}
+          />
+          <DataCard
+            data={temperature}
+            lastDataPoint={lastTemperature}
+            measurement="Temperature"
+            unit="°C"
+            fontColor="text-red-500"
+            borderColor="#ff0000"
+            backgroundColor="rgba(255, 152, 152, 0.2)"
+          />
+          <DataCard
+            data={humidity}
+            lastDataPoint={lastHumidity}
+            measurement="Humidity"
+            unit="%"
+            fontColor="text-blue-500"
+            borderColor="#0099ff"
+            backgroundColor="rgba(88, 135, 255, 0.2)"
+          />
+          <DataCard
+            data={pressure}
+            lastDataPoint={lastPressure}
+            measurement="Pressure"
+            unit="hPa"
+            fontColor="text-orange-500"
+            borderColor="rgba(255, 159, 64, 1)"
+            backgroundColor="rgba(255, 159, 64, 0.2)"
+          />
+          <DataCard
+            data={battery}
+            lastDataPoint={lastBattery}
+            measurement="Battery"
+            unit="%"
+            fontColor="text-green-500"
+            borderColor="#06ce21"
+            backgroundColor="rgba(115, 255, 64, 0.2)"
+          />
         </div>
       </main>
     </div>
