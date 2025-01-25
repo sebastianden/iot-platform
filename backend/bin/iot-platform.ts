@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
 import { ApiStack } from "../lib/api-stack";
+import { AuthStack } from "../lib/auth-stack";
 import { DatabaseStack } from "../lib/database-stack";
 import { IotStack } from "../lib/iot-stack";
 import { WebsiteStack } from "../lib/website-stack";
@@ -36,6 +37,14 @@ new ApiStack(app, "ApiStack", {
 });
 
 new WebsiteStack(app, "WebsiteStack", {
+  env: {
+    account,
+    region,
+  },
+  tags,
+});
+
+new AuthStack(app, "AuthStack", {
   env: {
     account,
     region,
