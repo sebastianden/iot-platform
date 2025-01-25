@@ -81,7 +81,7 @@ export default function Home() {
   return (
     <div className="flex p-4 font-[family-name:var(--font-geist-sans)]">
       <main className="flex grow justify-items-center items-center">
-        <div className="grow grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4">
+        <div className="grow grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
           <Menu
             dateRange={dateRange}
             setDateRange={setDateRange}
