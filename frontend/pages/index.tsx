@@ -1,5 +1,5 @@
-import { useSession, signIn, signOut } from "next-auth/react";
 import Home from "./home";
+import Auth from "aws-amplify";
 
 export default function Component() {
   const { data: session } = useSession();
