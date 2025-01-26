@@ -1,36 +1,78 @@
 import Home from "./home";
-import Auth from "aws-amplify";
+import { useEffect, useState } from "react";
+import {
+  fetchAuthSession,
+  getCurrentUser,
+  signOut,
+  AuthUser,
+  AuthSession,
+} from "aws-amplify/auth";
 
 export default function Component() {
-  const { data: session } = useSession();
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [session, setSession] = useState<AuthSession | null>(null);
 
-  if (session) {
+  const signOutUser = async () => {
+    try {
+      await signOut();
+      console.log("User signed out");
+      setUser(null);
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
+  };
+
+  const getUser = async () => {
+    try {
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+      console.log("Current user:", currentUser);
+    } catch (error) {
+      console.error("Error getting current user", error);
+      setUser(null);
+    }
+  };
+
+  const getAuthSession = async () => {
+    try {
+      const session = await fetchAuthSession();
+      setSession(session);
+      console.log("Auth session:", session);
+    } catch (error) {
+      console.error("Error getting auth session", error);
+      setSession(null);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch the user when the component mounts
+    getUser();
+    getAuthSession();
+  }, []);
+
+  if (user) {
     return (
       <>
         <Home />
         <div className="grid grid-cols-2 items-center mb-4 mx-4 p-4 text-gray-500 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
           <p>
-            Signed in as <strong>{session.user.email}</strong>
+            Signed in as <strong>{user.signInDetails?.loginId}</strong>
           </p>
           <button
             className="justify-self-end bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-xl"
-            onClick={() => signOut()}
+            onClick={() => signOutUser()}
           >
             Sign out
           </button>
+          <p>
+            Session JWT token (decoded):{" "}
+            {JSON.stringify(session?.tokens?.accessToken)}
+          </p>
+          <p>
+            Session ID token (encoded): {session?.tokens?.idToken?.toString()}
+          </p>
         </div>
       </>
     );
   }
-  return (
-    <div className="grid grid-cols-1 m-4 p-4 text-gray-500 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
-      <p className="pb-4 justify-self-center">Not signed in</p>
-      <button
-        className="justify-self-center bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-xl"
-        onClick={() => signIn("cognito")}
-      >
-        Sign in
-      </button>
-    </div>
-  );
 }

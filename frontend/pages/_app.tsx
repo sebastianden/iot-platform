@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 import { AppProps } from "next/app";
-
 import { Amplify } from "aws-amplify";
 import { Authenticator } from "@aws-amplify/ui-react";
 
@@ -15,13 +14,8 @@ Amplify.configure({
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <Authenticator>
-      {({ signOut, user }) => (
-        <main>
-          <h1>Hello {user?.username}</h1>
-          <button onClick={signOut}>Sign out</button>
-        </main>
-      )}
+    <Authenticator className="justify-self-center p-4 m-4 hover:shadow-lg border-gray-200 rounded-xl">
+      <Component {...pageProps} />
     </Authenticator>
   );
 }
