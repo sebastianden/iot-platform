@@ -1,16 +1,9 @@
 import Home from "./home";
 import { useEffect, useState } from "react";
-import {
-  fetchAuthSession,
-  getCurrentUser,
-  signOut,
-  AuthUser,
-  AuthSession,
-} from "aws-amplify/auth";
+import { getCurrentUser, signOut, AuthUser } from "aws-amplify/auth";
 
 export default function Component() {
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [session, setSession] = useState<AuthSession | null>(null);
 
   const signOutUser = async () => {
     try {
@@ -33,21 +26,9 @@ export default function Component() {
     }
   };
 
-  const getAuthSession = async () => {
-    try {
-      const session = await fetchAuthSession();
-      setSession(session);
-      console.log("Auth session:", session);
-    } catch (error) {
-      console.error("Error getting auth session", error);
-      setSession(null);
-    }
-  };
-
   useEffect(() => {
     // Fetch the user when the component mounts
     getUser();
-    getAuthSession();
   }, []);
 
   if (user) {
@@ -64,13 +45,6 @@ export default function Component() {
           >
             Sign out
           </button>
-          <p>
-            Session JWT token (decoded):{" "}
-            {JSON.stringify(session?.tokens?.accessToken)}
-          </p>
-          <p>
-            Session ID token (encoded): {session?.tokens?.idToken?.toString()}
-          </p>
         </div>
       </>
     );

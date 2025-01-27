@@ -8,12 +8,14 @@ interface AuthStackProps extends StackProps {
 }
 
 export class AuthStack extends Stack {
+  public readonly userPool: cognito.UserPool;
+
   constructor(scope: Construct, id: string, props: AuthStackProps) {
     super(scope, id, props);
 
     const { project } = props.tags;
 
-    const userPool = new cognito.UserPool(this, "UserPool", {
+    this.userPool = new cognito.UserPool(this, "UserPool", {
       userPoolName: `${project}-user-pool`,
       selfSignUpEnabled: true,
       signInAliases: {
@@ -44,7 +46,7 @@ export class AuthStack extends Stack {
 
     // Create a User Pool Client
     const userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
-      userPool,
+      userPool: this.userPool,
       userPoolClientName: `${project}-user-pool-client`,
       generateSecret: false,
       authFlows: {
@@ -58,7 +60,7 @@ export class AuthStack extends Stack {
     });
 
     const userPoolDomain = new cognito.UserPoolDomain(this, "UserPoolDomain", {
-      userPool,
+      userPool: this.userPool,
       cognitoDomain: {
         domainPrefix: project,
       },

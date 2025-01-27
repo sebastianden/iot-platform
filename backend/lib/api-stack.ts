@@ -1,5 +1,6 @@
 import {
   aws_apigateway as apigw,
+  aws_cognito as cognito,
   aws_dynamodb as dynamodb,
   aws_iam as iam,
   aws_lambda as lambda,
@@ -10,6 +11,7 @@ import { Construct } from "constructs";
 
 interface ApiStackProps extends StackProps {
   iotTable: dynamodb.Table;
+  userPool: cognito.UserPool;
   tags: {
     project: string;
   };
@@ -19,7 +21,7 @@ export class ApiStack extends Stack {
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
 
-    const { iotTable } = props;
+    const { iotTable, userPool } = props;
     const { project } = props.tags;
 
     const queryDynamodbLambdaRole = new iam.Role(
@@ -46,6 +48,15 @@ export class ApiStack extends Stack {
       }
     );
 
+    // Create a Cognito Authorizer
+    const authorizer = new apigw.CognitoUserPoolsAuthorizer(
+      this,
+      "CognitoAuthorizer",
+      {
+        cognitoUserPools: [userPool],
+      }
+    );
+
     const queryDynamoDbLambda = new lambda.Function(
       this,
       "IoTQueryDynamoDbLambda",
@@ -67,6 +78,21 @@ export class ApiStack extends Stack {
       {
         handler: queryDynamoDbLambda,
         restApiName: `${project}-query-api-gateway`,
+        defaultMethodOptions: {
+          authorizationType: apigw.AuthorizationType.COGNITO,
+          authorizer: authorizer,
+        },
+        defaultCorsPreflightOptions: {
+          allowOrigins: apigw.Cors.ALL_ORIGINS,
+          allowMethods: apigw.Cors.ALL_METHODS,
+          allowHeaders: [
+            "Content-Type",
+            "X-Amz-Date",
+            "Authorization",
+            "X-Api-Key",
+            "X-Amz-Security-Token",
+          ],
+        },
       }
     );
   }

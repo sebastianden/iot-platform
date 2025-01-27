@@ -27,6 +27,14 @@ new IotStack(app, "IotStack", {
   iotTable: databaseStack.iotTable,
 });
 
+const authStack = new AuthStack(app, "AuthStack", {
+  env: {
+    account,
+    region,
+  },
+  tags,
+});
+
 new ApiStack(app, "ApiStack", {
   env: {
     account,
@@ -34,17 +42,10 @@ new ApiStack(app, "ApiStack", {
   },
   tags,
   iotTable: databaseStack.iotTable,
+  userPool: authStack.userPool,
 });
 
 new WebsiteStack(app, "WebsiteStack", {
-  env: {
-    account,
-    region,
-  },
-  tags,
-});
-
-new AuthStack(app, "AuthStack", {
   env: {
     account,
     region,

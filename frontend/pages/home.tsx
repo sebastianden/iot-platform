@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import DataCard from "../components/dataCard";
 import Menu from "../components/menu";
+import { AuthSession, fetchAuthSession } from "aws-amplify/auth";
 
 export default function Home() {
   const url = "https://j5v6xbmpld.execute-api.eu-central-1.amazonaws.com/prod/";
@@ -8,7 +9,22 @@ export default function Home() {
   const [dateRange, setDateRange] = useState<string>("lastDay");
   const [device, setDevice] = useState<string>("core2");
   const [data, setData] = useState([]);
-  //const [loading, setLoading] = useState<boolean>(true);
+  const [session, setSession] = useState<AuthSession | null>(null);
+
+  useEffect(() => {
+    const getAuthSession = async () => {
+      try {
+        const session = await fetchAuthSession();
+        setSession(session);
+        console.log("Auth session:", session);
+      } catch (error) {
+        console.error("Error getting auth session", error);
+        setSession(null);
+      }
+    };
+
+    getAuthSession();
+  }, []);
 
   useEffect(() => {
     const getUnixTimeRange = (): { from: number; to: number } => {
@@ -26,23 +42,36 @@ export default function Home() {
       }
     };
 
-    const fetchData = async (from: number, to: number, device: string) => {
+    const fetchData = async (
+      from: number,
+      to: number,
+      device: string,
+      idToken: string
+    ) => {
       try {
         const response = await fetch(
-          `${url}?from=${from}&to=${to}&device=${device}`
+          `${url}?from=${from}&to=${to}&device=${device}`,
+          {
+            headers: new Headers({
+              Authorization: idToken,
+            }),
+          }
         );
         const result = await response.json();
         setData(result.data);
       } catch (error) {
         console.error("Error fetching data:", error);
-      } finally {
-        //setLoading(false);
       }
     };
 
     const { from, to } = getUnixTimeRange();
-    fetchData(from, to, device);
-  }, [dateRange, device]);
+
+    // Get id token from the session and fetch data
+    if (session && session.tokens && session.tokens.idToken) {
+      const idToken = session.tokens.idToken.toString();
+      fetchData(from, to, device, idToken);
+    }
+  }, [dateRange, device, session]);
 
   const temperature = data.map(({ temperature, timestamp }) => ({
     value: temperature,
