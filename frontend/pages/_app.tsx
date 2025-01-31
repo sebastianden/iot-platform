@@ -11,6 +11,10 @@ Amplify.configure({
       // TODO: Environment variables
       userPoolId: "eu-central-1_WCbeFbGbp",
       userPoolClientId: "2ab5b55urtmgve2qak6ei9u28v",
+      userAttributes: {
+        given_name: { required: true },
+        family_name: { required: true },
+      },
     },
   },
 });
