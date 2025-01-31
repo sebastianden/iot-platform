@@ -1,8 +1,9 @@
 import "@/styles/globals.css";
 import { AppProps } from "next/app";
 import { Amplify } from "aws-amplify";
-import { Authenticator } from "@aws-amplify/ui-react";
+import { Authenticator, ThemeProvider } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
+import theme from "../components/authTheme";
 
 Amplify.configure({
   Auth: {
@@ -16,9 +17,11 @@ Amplify.configure({
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <Authenticator className="justify-self-center p-4 m-4 border-gray-200 ">
-      <Component {...pageProps} />
-    </Authenticator>
+    <ThemeProvider theme={theme}>
+      <Authenticator className="m-4">
+        <Component {...pageProps} />
+      </Authenticator>
+    </ThemeProvider>
   );
 }
 
