@@ -1,6 +1,6 @@
 import Home from "./home";
 import { useEffect, useState } from "react";
-import { getCurrentUser, signOut, AuthUser } from "aws-amplify/auth";
+import { getCurrentUser, AuthUser } from "aws-amplify/auth";
 import AuthInfo from "@/components/authInfo";
 
 export default function Component() {

@@ -19,7 +19,7 @@ const AuthInfo = (props: AuthInfoProps) => {
   };
 
   return (
-    <div className="grid grid-cols-3 items-center card mx-4">
+    <div className="grid grid-cols-3 items-center card mx-4 mb-4">
       <p className="truncate col-span-2 text-gray-500">
         Signed in as {user.signInDetails?.loginId}
       </p>
