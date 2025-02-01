@@ -1,8 +1,16 @@
 const theme = {
   name: "terminal",
-  primaryColor: "green",
-  secondaryColor: "green",
+  primaryColor: "blue",
+  secondaryColor: "blue",
   tokens: {
+    // This sets the global font for some reason
+    fonts: {
+      default: {
+        variable: {
+          value: "Geist, sans-serif",
+        },
+      },
+    },
     colors: {
       green: {
         10: { value: "#C7EFCA" },

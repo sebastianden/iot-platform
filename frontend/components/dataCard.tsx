@@ -26,10 +26,10 @@ const DataCard: React.FC<DataCardProps> = ({
   backgroundColor,
 }) => {
   return (
-    <div className="grid grid-cols-1 gap-4 p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
+    <div className="grid grid-cols-1 gap-4 card">
       <p className="text-gray-500">{measurement}:</p>
       <div className="flex justify-center">
-        <p className={`flex font-bold text-5xl ${fontColor}`}>
+        <p className={`flex text-5xl ${fontColor}`}>
           {lastDataPoint}
         </p>
         <p className="flex text-2xl text-gray-500">{unit}</p>

@@ -22,7 +22,7 @@ const Menu: React.FC<menuProps> = ({
   };
 
   return (
-    <div className="lg:col-span-2 md:col-span-2 sm:col-span-1 p-4 border-2 shadow-md hover:shadow-lg border-gray-200 rounded-xl">
+    <div className="lg:col-span-2 md:col-span-2 sm:col-span-1 card">
       <form className="text-gray-500 p-4 flex flex-col gap-2">
         <label className="inline-block" htmlFor="dateRange">
           Select Date Range:

@@ -1,7 +1,9 @@
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
 import "chartjs-adapter-moment";
-import { ChartData, ChartOptions } from "chart.js";
+import { ChartData, ChartOptions, defaults } from "chart.js";
+
+defaults.font.family = "'Geist', sans-serif";
 
 interface DataPoint {
   value: number;

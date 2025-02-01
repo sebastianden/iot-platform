@@ -3,7 +3,7 @@ import { AppProps } from "next/app";
 import { Amplify } from "aws-amplify";
 import { Authenticator, ThemeProvider } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import theme from "../components/authTheme";
+import theme from "../styles/authTheme";
 
 Amplify.configure({
   Auth: {

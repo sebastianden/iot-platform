@@ -108,7 +108,7 @@ export default function Home() {
     battery.length > 0 ? parseInt(battery[battery.length - 1].value) : null;
 
   return (
-    <div className="flex p-4 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex p-4">
       <main className="flex grow justify-items-center items-center">
         <div className="grow grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
           <Menu

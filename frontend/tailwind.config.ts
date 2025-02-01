@@ -8,11 +8,6 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        // TODO: How different font?
-        roboto: ["Roboto", "sans"],
-        geist: ["Geist", "sans"],
-      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
