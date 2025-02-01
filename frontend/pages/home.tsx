@@ -4,8 +4,7 @@ import Menu from "../components/menu";
 import { AuthSession, fetchAuthSession } from "aws-amplify/auth";
 
 export default function Home() {
-  // TODO: Environment variable
-  const url = "https://j5v6xbmpld.execute-api.eu-central-1.amazonaws.com/prod/";
+  const url = process.env.NEXT_PUBLIC_QUERY_API_URL;
 
   const [dateRange, setDateRange] = useState<string>("lastDay");
   const [device, setDevice] = useState<string>("core2");

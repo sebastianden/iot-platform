@@ -4,6 +4,7 @@ import {
   aws_dynamodb as dynamodb,
   aws_iam as iam,
   aws_lambda as lambda,
+  CfnOutput,
   Stack,
   StackProps,
 } from "aws-cdk-lib";
@@ -95,5 +96,9 @@ export class ApiStack extends Stack {
         },
       }
     );
+
+    new CfnOutput(this, "QueryApiUrl", {
+      value: queryApiGateway.url,
+    });
   }
 }

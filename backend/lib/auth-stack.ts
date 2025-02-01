@@ -1,4 +1,9 @@
-import { aws_cognito as cognito, Stack, StackProps } from "aws-cdk-lib";
+import {
+  aws_cognito as cognito,
+  CfnOutput,
+  Stack,
+  StackProps,
+} from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 interface AuthStackProps extends StackProps {
@@ -24,16 +29,17 @@ export class AuthStack extends Stack {
       autoVerify: {
         email: true,
       },
-      standardAttributes: {
-        givenName: {
-          required: true,
-          mutable: true,
-        },
-        familyName: {
-          required: true,
-          mutable: true,
-        },
-      },
+      // TODO: Get rid of the default attributes
+      // standardAttributes: {
+      //   givenName: {
+      //     required: true,
+      //     mutable: true,
+      //   },
+      //   familyName: {
+      //     required: true,
+      //     mutable: true,
+      //   },
+      // },
       passwordPolicy: {
         minLength: 8,
         requireLowercase: true,
@@ -64,6 +70,14 @@ export class AuthStack extends Stack {
       cognitoDomain: {
         domainPrefix: project,
       },
+    });
+
+    new CfnOutput(this, "UserPoolId", {
+      value: this.userPool.userPoolId,
+    });
+
+    new CfnOutput(this, "UserPoolClientId", {
+      value: userPoolClient.userPoolClientId,
     });
   }
 }

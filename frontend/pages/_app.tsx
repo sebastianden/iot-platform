@@ -8,9 +8,8 @@ import theme from "../components/authTheme";
 Amplify.configure({
   Auth: {
     Cognito: {
-      // TODO: Environment variables
-      userPoolId: "eu-central-1_WCbeFbGbp",
-      userPoolClientId: "2ab5b55urtmgve2qak6ei9u28v",
+      userPoolId: process.env.NEXT_PUBLIC_USER_POOL_ID || "",
+      userPoolClientId: process.env.NEXT_PUBLIC_USER_POOL_CLIENT_ID || "",
       userAttributes: {
         given_name: { required: true },
         family_name: { required: true },
