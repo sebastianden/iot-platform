@@ -1,7 +1,7 @@
 const theme = {
   name: "terminal",
-  primaryColor: "blue",
-  secondaryColor: "blue",
+  primaryColor: "green",
+  secondaryColor: "green",
   tokens: {
     // This sets the global font for some reason
     fonts: {

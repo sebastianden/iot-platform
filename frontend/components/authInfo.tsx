@@ -24,7 +24,7 @@ const AuthInfo = (props: AuthInfoProps) => {
         Signed in as {user.signInDetails?.loginId}
       </p>
       <button
-        className="justify-self-end bg-gray-500 hover:bg-gray-700 text-white py-2 px-4 rounded-xl"
+        className="justify-self-end bg-gray-500 hover:bg-gray-700 dark:bg-gray-700 hover:dark:bg-gray-500 text-white dark:text-red-600 py-2 px-4 rounded-xl"
         onClick={() => signOutUser()}
       >
         Sign out

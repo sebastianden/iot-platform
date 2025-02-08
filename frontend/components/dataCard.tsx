@@ -29,12 +29,10 @@ const DataCard: React.FC<DataCardProps> = ({
     <div className="grid grid-cols-1 gap-4 card">
       <p className="text-gray-500">{measurement}:</p>
       <div className="flex justify-center">
-        <p className={`flex text-5xl ${fontColor}`}>
-          {lastDataPoint}
-        </p>
+        <p className={`flex text-5xl ${fontColor}`}>{lastDataPoint}</p>
         <p className="flex text-2xl text-gray-500">{unit}</p>
       </div>
-      <div className="flex-grow border-t-2 border-gray-200"></div>
+      <div className="flex-grow border-t-2 border-gray-200 dark:border-gray-500"></div>
       <div>
         <LineChart
           data={data}

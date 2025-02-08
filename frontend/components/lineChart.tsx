@@ -38,7 +38,7 @@ const LineChart: React.FC<LineChartProps> = ({
 
   const options: ChartOptions<"line"> = {
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "bottom",

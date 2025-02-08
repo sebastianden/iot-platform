@@ -21,14 +21,27 @@ const Menu: React.FC<menuProps> = ({
     setDevice(event.target.value);
   };
 
+  const toggleTheme = () => {
+    document.documentElement.classList.toggle("dark");
+  };
+
   return (
     <div className="lg:col-span-2 md:col-span-2 sm:col-span-1 card">
+      <label className="flex items-center justify-end">
+        <input
+          type="checkbox"
+          value=""
+          className="sr-only peer"
+          onChange={toggleTheme}
+        />
+        <div className="relative w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:dark:bg-gray-500 after:dark:border-gray-500 after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600"></div>
+      </label>
       <form className="text-gray-500 p-4 flex flex-col gap-2">
         <label className="inline-block" htmlFor="dateRange">
           Select Date Range:
         </label>
         <select
-          className="p-2 border-2 border-gray-200 rounded-xl"
+          className="p-2 border-2 border-gray-200 dark:border-gray-500 rounded-xl dark:bg-black"
           id="dateRange"
           value={dateRange}
           onChange={handleDateRangeChange}
@@ -40,7 +53,7 @@ const Menu: React.FC<menuProps> = ({
         </select>
         <label htmlFor="device">Select Device:</label>
         <select
-          className="border-2 border-gray-200 rounded-xl p-2"
+          className="border-2 border-gray-200 dark:border-gray-500 rounded-xl dark:bg-black p-2"
           id="device"
           value={device}
           onChange={handleDeviceChange}
