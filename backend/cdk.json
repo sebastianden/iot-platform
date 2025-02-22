@@ -20,6 +20,7 @@
     "general": {
       "account": "274607345716",
       "region": "eu-central-1",
+      "certificateId": "57b2f668425ffb7453d537d793c94fad46e3b06ea30f5dce45223ea2288da737",
       "tags": {
         "project": "iot-platform"
       }

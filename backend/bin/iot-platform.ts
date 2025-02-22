@@ -8,7 +8,8 @@ import { WebsiteStack } from "../lib/website-stack";
 
 const app = new cdk.App();
 
-const { account, region, tags } = app.node.tryGetContext("general");
+const { account, region, tags, certificateId } =
+  app.node.tryGetContext("general");
 
 const databaseStack = new DatabaseStack(app, "DatabaseStack", {
   env: {
@@ -25,6 +26,7 @@ new IotStack(app, "IotStack", {
   },
   tags,
   iotTable: databaseStack.iotTable,
+  certificateId: certificateId,
 });
 
 const authStack = new AuthStack(app, "AuthStack", {

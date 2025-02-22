@@ -16,26 +16,45 @@ interface IotStackProps extends StackProps {
     project: string;
   };
   iotTable: dynamodb.Table;
+  certificateId: string;
 }
 
 export class IotStack extends Stack {
   constructor(scope: Construct, id: string, props: IotStackProps) {
     super(scope, id, props);
 
-    const { iotTable } = props;
+    const { iotTable, certificateId } = props;
     const { account, region } = props.env;
     const { project } = props.tags;
 
-    // TODO: Fix
+    const certificateArn = `arn:aws:iot:${region}:${account}:cert/${certificateId}`;
+
     const core2 = new iot.CfnThing(this, "Core2", {
       thingName: "core2",
     });
+
+    new iot.CfnThingPrincipalAttachment(
+      this,
+      "IotThingPrincipalAttachmentCore2",
+      {
+        thingName: core2.ref,
+        principal: certificateArn,
+      }
+    );
 
     const esp8266 = new iot.CfnThing(this, "Esp8266", {
       thingName: "esp8266",
     });
 
-    // TODO: This one is not actually used
+    new iot.CfnThingPrincipalAttachment(
+      this,
+      "IotThingPrincipalAttachmentEsp8266",
+      {
+        thingName: esp8266.ref,
+        principal: certificateArn,
+      }
+    );
+
     const iotThingPolicy = new iot.CfnPolicy(this, "IotThingPolicy", {
       policyName: `${project}-thing-policy`,
       policyDocument: {
@@ -44,12 +63,12 @@ export class IotStack extends Stack {
           {
             Effect: "Allow",
             Action: "iot:Connect",
-            Resource: `arn:aws:iot:${region}:${account}:client/\${iot:Connection.Thing.ThingName}`,
+            Resource: `arn:aws:iot:${region}:${account}:client/*`,
           },
           {
             Effect: "Allow",
             Action: "iot:Publish",
-            Resource: `arn:aws:iot:${region}:${account}:topic/iot/\${iot:Connection.Thing.ThingName}`,
+            Resource: `arn:aws:iot:${region}:${account}:topic/iot/*`,
           },
           {
             Effect: "Allow",
@@ -65,25 +84,10 @@ export class IotStack extends Stack {
       },
     });
 
-    // TODO: Import certificate by ARN?
-    // arn:aws:iot:eu-central-1:274607345716:cert/57b2f668425ffb7453d537d793c94fad46e3b06ea30f5dce45223ea2288da737
-
-    // const iotCertificate = new iot.CfnCertificate(this, "IotCertificate", {
-    //   status: "ACTIVE",
-    //   certificatePem:,
-    //   caCertificatePem:,
-
-    // });
-
-    // new iot.CfnPolicyPrincipalAttachment(this, "IotThingPolicyAttachment", {
-    //   policyName: iotThingPolicy.ref,
-    //   principal: iotCertificate.attrArn,
-    // });
-
-    // new iot.CfnThingPrincipalAttachment(this, "IotThingPrincipalAttachment", {
-    //   thingName: iotThing.ref,
-    //   principal: iotCertificate.attrArn,
-    // });
+    new iot.CfnPolicyPrincipalAttachment(this, "IotThingPolicyAttachment", {
+      policyName: iotThingPolicy.ref,
+      principal: certificateArn,
+    });
 
     const iotRuleRole = new iam.Role(this, "IotDynamoDbTopicRuleRole", {
       roleName: `${project}-dynamodb-topic-rule-role`,
