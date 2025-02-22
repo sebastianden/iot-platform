@@ -29,17 +29,6 @@ export class AuthStack extends Stack {
       autoVerify: {
         email: true,
       },
-      // TODO: Get rid of the default attributes
-      // standardAttributes: {
-      //   givenName: {
-      //     required: true,
-      //     mutable: true,
-      //   },
-      //   familyName: {
-      //     required: true,
-      //     mutable: true,
-      //   },
-      // },
       passwordPolicy: {
         minLength: 8,
         requireLowercase: true,
