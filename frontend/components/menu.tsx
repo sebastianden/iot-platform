@@ -59,7 +59,7 @@ const Menu: React.FC<menuProps> = ({
           onChange={handleDeviceChange}
         >
           <option value="core2">Core2</option>
-          {/* Add more device options here as needed */}
+          <option value="esp8266">ESP8266</option>
         </select>
       </form>
     </div>

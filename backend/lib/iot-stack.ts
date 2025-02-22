@@ -26,10 +26,16 @@ export class IotStack extends Stack {
     const { account, region } = props.env;
     const { project } = props.tags;
 
-    const iotThing = new iot.CfnThing(this, "IotThing", {
+    // TODO: Fix
+    const core2 = new iot.CfnThing(this, "Core2", {
       thingName: "core2",
     });
 
+    const esp8266 = new iot.CfnThing(this, "Esp8266", {
+      thingName: "esp8266",
+    });
+
+    // TODO: This one is not actually used
     const iotThingPolicy = new iot.CfnPolicy(this, "IotThingPolicy", {
       policyName: `${project}-thing-policy`,
       policyDocument: {
@@ -58,6 +64,9 @@ export class IotStack extends Stack {
         ],
       },
     });
+
+    // TODO: Import certificate by ARN?
+    // arn:aws:iot:eu-central-1:274607345716:cert/57b2f668425ffb7453d537d793c94fad46e3b06ea30f5dce45223ea2288da737
 
     // const iotCertificate = new iot.CfnCertificate(this, "IotCertificate", {
     //   status: "ACTIVE",
