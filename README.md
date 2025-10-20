@@ -9,6 +9,8 @@ This repository contains everything necessary to spin up a fully functioning IoT
 
 ## Architecture
 
+The resources deployed in the AWS cloud will enable storing and retrieval of the IoT sensor data. An IoT rule inserts all data published to a certain MQTT topic into multiple columns of a DynamoDB table. Via a POST request to a REST ApiGateway a lambda function can be triggered to query the database table and return all data from a specified time interval.
+
 ![](img/iot-platform-architecture.drawio.png)
 
 ## Getting Started
