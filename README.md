@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/static/v1?label=python&message=3.12&color=blue&logo=python&logoColor=white)]()
 [![CDK](https://img.shields.io/badge/aws--cdk-2.174.1-green)](https://docs.aws.amazon.com/cdk/api/v2/)
 [![Code Size](https://img.shields.io/github/languages/code-size/sebastianden/iot-platform)]()
-[![License](https://img.shields.io/github/license/sebastianden/esp_aws)]()
+[![License](https://img.shields.io/github/license/sebastianden/iot-platform)]()
 
 This repository contains everything necessary to spin up a fully functioning IoT platform including configuration of edge devices, fully functional AWS backend and Next.js frontend. All AWS service usage is within the free tier range. Deploying and running this project costs exactly 0$.
 
