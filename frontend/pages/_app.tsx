@@ -3,7 +3,6 @@ import { AppProps } from "next/app";
 import { Amplify } from "aws-amplify";
 import { Authenticator, ThemeProvider as AmplifyThemeProvider } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import theme from "../styles/authTheme";
 import { ThemeProvider } from "../contexts/ThemeContext";
 
 Amplify.configure({
@@ -18,7 +17,7 @@ Amplify.configure({
 function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider>
-      <AmplifyThemeProvider theme={theme}>
+      <AmplifyThemeProvider>
         <Authenticator className="m-4">
           <Component {...pageProps} />
         </Authenticator>

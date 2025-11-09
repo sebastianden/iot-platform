@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Ensure Geist font is used everywhere */
+* {
+  font-family: 'Geist', sans-serif !important;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -18,8 +23,7 @@ body {
   color: var(--foreground);
   background: var(--background);
   transition: background-color 0.2s ease, color 0.2s ease;
-
-  /* Amplify theme is taking over the font-family */
+  font-family: 'Geist', sans-serif !important;
 }
 
 .card {
@@ -31,4 +35,185 @@ body {
 
   /* Smooth transitions */
   transition: all 0.2s ease;
+}
+
+/* Amplify Authenticator Dark Mode Styling */
+.dark [data-amplify-authenticator] {
+  --amplify-colors-background-primary: var(--background);
+  --amplify-colors-background-secondary: #1f2937;
+  --amplify-colors-font-primary: var(--foreground);
+  --amplify-colors-font-secondary: #9ca3af;
+  --amplify-colors-border-primary: #6b7280;
+  --amplify-colors-border-secondary: #4b5563;
+  --amplify-colors-neutral-80: #374151;
+  --amplify-colors-neutral-90: #1f2937;
+  --amplify-colors-neutral-60: #6b7280;
+
+  /* Force dark mode colors */
+  color: var(--foreground) !important;
+  background-color: var(--background) !important;
+}
+
+/* Make Amplify components match your card styling */
+[data-amplify-authenticator] .amplify-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 2px solid #d1d5db !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  transition: all 0.2s ease !important;
+}
+
+.dark [data-amplify-authenticator] .amplify-card {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
+  border-color: #6b7280 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Force all Amplify components to use dark colors in dark mode */
+.dark [data-amplify-authenticator] * {
+  color: var(--foreground) !important;
+}
+
+.dark [data-amplify-authenticator] .amplify-heading,
+.dark [data-amplify-authenticator] .amplify-text,
+.dark [data-amplify-authenticator] .amplify-label,
+.dark [data-amplify-authenticator] p,
+.dark [data-amplify-authenticator] span,
+.dark [data-amplify-authenticator] div:not(.amplify-card) {
+  background-color: transparent !important;
+  color: var(--foreground) !important;
+}
+
+/* Ensure the main authenticator container has dark background */
+.dark [data-amplify-authenticator] {
+  background-color: var(--background) !important;
+}
+
+/* Force card backgrounds in dark mode */
+.dark [data-amplify-authenticator] [data-amplify-component="card"],
+.dark [data-amplify-authenticator] .amplify-card,
+.dark [data-amplify-authenticator] [class*="card"] {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
+  border-color: #6b7280 !important;
+}
+
+/* Style input fields to match your design */
+[data-amplify-authenticator] input,
+[data-amplify-authenticator] select {
+  border: 2px solid #d1d5db !important;
+  border-radius: 0.75rem !important;
+  padding: 0.5rem !important;
+  font-family: 'Geist', sans-serif !important;
+}
+
+.dark [data-amplify-authenticator] input,
+.dark [data-amplify-authenticator] select {
+  background-color: #374151 !important;
+  border-color: #6b7280 !important;
+  color: var(--foreground) !important;
+}
+
+/* Additional dark mode overrides for specific Amplify components */
+.dark .amplify-authenticator,
+.dark .amplify-authenticator__container {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+.dark .amplify-tabs,
+.dark .amplify-tabs__panel {
+  background-color: transparent !important;
+  color: var(--foreground) !important;
+}
+
+/* Override any inline styles that might be forcing light colors */
+.dark [data-amplify-authenticator] [style*="background"] {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
+}
+
+/* Most aggressive dark mode overrides - force everything */
+html.dark [data-amplify-authenticator],
+html.dark [data-amplify-authenticator] > *,
+html.dark [data-amplify-authenticator] .amplify-authenticator,
+html.dark [data-amplify-authenticator] .amplify-authenticator__container,
+html.dark [data-amplify-authenticator] .amplify-tabs,
+html.dark [data-amplify-authenticator] .amplify-tabs__panel {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+/* Force all cards and form containers to be dark */
+html.dark [data-amplify-authenticator] > div,
+html.dark [data-amplify-authenticator] form,
+html.dark [data-amplify-authenticator] fieldset {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
+  border-color: #6b7280 !important;
+  color: var(--foreground) !important;
+}
+
+/* Nuclear option - override everything with dark colors */
+html.dark [data-amplify-authenticator] * {
+  background-color: transparent !important;
+  color: var(--foreground) !important;
+}
+
+html.dark [data-amplify-authenticator] *[class*="card"],
+html.dark [data-amplify-authenticator] *[class*="container"],
+html.dark [data-amplify-authenticator] *[class*="panel"] {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
+}
+
+[data-amplify-authenticator] input:focus,
+[data-amplify-authenticator] select:focus {
+  border-color: #6b7280 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 1px #6b7280 !important;
+}
+
+/* Style buttons to match your neutral theme */
+[data-amplify-authenticator] button[type="submit"] {
+  background-color: #374151 !important;
+  border: 2px solid #374151 !important;
+  border-radius: 0.75rem !important;
+  color: white !important;
+  font-weight: 500 !important;
+  padding: 0.75rem 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-amplify-authenticator] button[type="submit"]:hover {
+  background-color: #1f2937 !important;
+  border-color: #1f2937 !important;
+}
+
+/* Dark mode button styling */
+.dark [data-amplify-authenticator] button[type="submit"] {
+  background-color: #6b7280 !important;
+  border-color: #6b7280 !important;
+}
+
+.dark [data-amplify-authenticator] button[type="submit"]:hover {
+  background-color: #9ca3af !important;
+  border-color: #9ca3af !important;
+}
+
+/* Style links to use neutral colors */
+[data-amplify-authenticator] a,
+[data-amplify-authenticator] button:not([type="submit"]) {
+  color: #374151 !important;
+}
+
+.dark [data-amplify-authenticator] a,
+.dark [data-amplify-authenticator] button:not([type="submit"]) {
+  color: #9ca3af !important;
+}
+
+[data-amplify-authenticator] a:hover,
+[data-amplify-authenticator] button:not([type="submit"]):hover {
+  color: #1f2937 !important;
+}
+
+.dark [data-amplify-authenticator] a:hover,
+.dark [data-amplify-authenticator] button:not([type="submit"]):hover {
+  color: #d1d5db !important;
 }
