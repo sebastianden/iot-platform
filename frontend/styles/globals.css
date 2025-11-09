@@ -24,4 +24,5 @@ body {
 
 .card {
   @apply p-4 border-2 shadow-md hover:shadow-lg border-gray-200 dark:border-gray-500 rounded-xl;
+  @apply dark:shadow-gray-600 dark:hover:shadow-gray-500;
 }
