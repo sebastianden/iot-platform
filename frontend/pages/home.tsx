@@ -71,7 +71,7 @@ export default function Home() {
       const idToken = session.tokens.idToken.toString();
       fetchData(from, to, device, idToken);
     }
-  }, [dateRange, device, session]);
+  }, [dateRange, device, session, url]);
 
   const temperature = data.map(({ temperature, timestamp }) => ({
     value: temperature,
